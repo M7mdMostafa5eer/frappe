@@ -6,10 +6,10 @@
 # ----------------------
 	  ARG	GROUP_ID=1000 && USER_ID=1000 && USER_NAME=ubuntu
 
-	  RUN	groupadd -g $GROUP_ID ${USER_NAME}                                                    &&\
-		    useradd --no-log-init -r -m -u $USER_ID -g $GROUP_ID -G sudo ${USER_NAME}             &&\
-		    echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers                           &&\
-		    chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}                                 &&\
+	  RUN	groupadd -g $GROUP_ID ${USER_NAME}							&&\
+		    useradd --no-log-init -r -m -u $USER_ID -g $GROUP_ID -G sudo ${USER_NAME}		&&\
+		    echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers				&&\
+		    chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}				&&\
 		    chmod -R o+rx /home/${USER_NAME}
 
 # 03 | update & install ubuntu mandatory tools & frappe dependances |
@@ -19,13 +19,13 @@
 	  ENV PATH ${NVM_DIR}/versions/node/v${NODE_VER}/bin/:${PATH}
 	  ARG WKHTMLTOPDF_VER=0.12.6.1-3 && WKHTMLTOPDF_DISTRO=bookworm
 
-	  RUN	apt-get update && apt-get upgrade -y && DEBIAN_FRONTEND=noninteractive                 \
-			  apt-get install --no-install-recommends -y                                             \
-				nano                                                                                   \
-				curl																					\
-				git																						\
-				wget																					\
-				nginx																					\
-				redis-server																			\
-				mariadb-client																			\
-				gettext-base																			\
+	  RUN	apt-get update && apt-get upgrade -y && DEBIAN_FRONTEND=noninteractive			\
+			  apt-get install --no-install-recommends -y					\
+				nano									\
+				curl									\
+				git									\
+				wget									\
+				nginx									\
+				redis-server								\
+				mariadb-client								\
+				gettext-base								\
