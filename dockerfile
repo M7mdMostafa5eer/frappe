@@ -10,9 +10,9 @@
 
 # 03 | create variables |
 # -----------------------
-	ARG	ARG	GROUP_ID=1000 && USER_ID=1000 && USER_NAME=frappe
+	ARG GROUP_ID=1000 && USER_ID=1000 && USER_NAME=frappe
 	ARG NODE_VER=18.16.1
-	ENV	NVM_DIR=/home/${USER_NAME}/.nvm
+	ENV NVM_DIR=/home/${USER_NAME}/.nvm
 	ENV PATH ${NVM_DIR}/versions/node/v${NODE_VER}/bin/:${PATH}
 	ARG WKHTMLTOPDF_VER=0.12.6.1-3 && WKHTMLTOPDF_DISTRO=bookworm
 	ARG FRAPPE_BRANCH=version-14 && FRAPPE_FOLDER_NAME=frappe-bench && FRAPPE_PATH=https://github.com/frappe/frappe
