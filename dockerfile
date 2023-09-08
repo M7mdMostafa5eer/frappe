@@ -24,35 +24,35 @@
 
 # 05 | update & install mandatory tools  |
 # ----------------------------------------
-	RUN	apt-get update && apt-get install --no-install-recommends -y									\
-				curl																					\
-				git																						\
-				nano																					\
-				nginx																					\
-				gettext-base																			\
+	RUN	apt-get update && apt-get install --no-install-recommends -y			\
+				curl																														\
+				git																															\
+				nano																														\
+				nginx																														\
+				gettext-base																										\
 		# for weasyprint |
 		# ----------------
-				libharfbuzz0b																			\
-				libpango-1.0-0																			\
-				libpangoft2-1.0-0																		\
-				libpangocairo-1.0-0																		\
+				libharfbuzz0b																										\
+				libpango-1.0-0																									\
+				libpangoft2-1.0-0																								\
+				libpangocairo-1.0-0																							\
 		# for backups |
 		# -------------
-				restic																					\
+				restic																													\
 		# database mariadb |
 		# ------------------
-				mariadb-client																			\
+				mariadb-client																									\
 		# database postgres |
 		# -------------------
-				libpq-dev																				\
-				postgresql-client																		\
+				libpq-dev																												\
+				postgresql-client																								\
 		# install redis |
 		#----------------
-				redis-tools																				\
+				redis-tools																											\
 		# for healthcheck |
 		# -----------------
-				wait-for-it																				\
-				jq																						\
+				wait-for-it																											\
+				jq																															\
 		# nodejs & yarn |
 		# ---------------
 				&&	mkdir -p ${NVM_DIR}																						&&	\
