@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  MariaDB:
+    container_name: MariaDB
+    image: ${DB_IMAGE}
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    volumes:
+      - MariaDB:/var/lib/mysql
+    networks:
+      - frappe
+  
+  redis-cache:
+    container_name: redis-cache
+    image: ${Redis_IMAGE}
+    restart: unless-stopped
+    volumes:
+      - redis-cache:/data
+    networks:
+      - frappe
+  
+  redis-queue:
+    container_name: redis-queue
+    image: ${Redis_IMAGE}
+    restart: unless-stopped
+    volumes:
+      - redis-queue:/data
+    networks:
+      - frappe
+
+  redis-socketio:
+    container_name: redis-socketio
+    image: ${Redis_IMAGE}
+    restart: unless-stopped
+    volumes:
+      - redis-socketio:/data
+    networks:
+      - frappe
+  
+  frappe-bench:
+    container_name: frappe-bench
+    image: ${IMAGE_NAME}
+    restart: unless-stopped
+    volumes:
+      - frappe-sites:/home/ubuntu/frappe-bench/sites
+      - frappe-apps:/home/ubuntu/frappe-bench/apps
+    networks:
+      - frappe
+    ports:
+      - 9999:9999
+      - 8888:8888
+  
+  configurator:
+    container_name: configurator
+    image: ${IMAGE_NAME}
+    deploy:
+      restart_policy:
+        condition: none
+    entrypoint:
+      - bash
+      - -c
+    command:
+      - >
+        bench set-config -g db_host ${DB_HOST};
+        bench set-config -g db_port "${DB_PORT}";
+        bench set-config -g redis_cache "redis://${REDIS_CACHE}";
+        bench set-config -g redis_queue "redis://${REDIS_QUEUE}";
+        bench set-config -g redis_socketio "redis://${REDIS_SOCKETIO}";
+        bench set-config -g socketio_port "${SOCKETIO_PORT}";
+    volumes:
+      - frappe-sites:/home/ubuntu/frappe-bench/sites
+      - frappe-apps:/home/ubuntu/frappe-bench/apps
+    networks:
+      - frappe
+
+volumes:
+  MariaDB:
+    name: MariaDB
+  redis-cache:
+    name: redis-cache
+  redis-queue:
+    name: redis-queue
+  redis-socketio:
+    name: redis-socketio
+  frappe-sites:
+    name: frappe-sites
+  frappe-apps:
+    name: frappe-apps
+
+networks:
+  frappe:
+    name: frappe
