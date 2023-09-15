@@ -94,15 +94,15 @@
 				echo 'export NVM_DIR="/home/$USER_NAME/.nvm"' >>/home/${USER_NAME}/.bashrc					&&	\
 				echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"  # This loads nvm' >>/home/${USER_NAME}/.bashrc	&&	\
 				echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >>/home ${USER_NAME}/.bashrc
-		# install supervisor |
-		# --------------------
-			RUN	apt-get update && apt-get upgrade -y && apt-get install -y 								\
-				supervisor													&&	\
-					echo "[program:nginx]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
-					echo "command=/usr/sbin/nginx -g 'daemon off;'" | tee -a /etc/supervisor/conf.d/supervisord.conf
-		# Clean up |
-		# ----------
-			RUN	rm -rf /var/lib/apt/lists/*
+	# install supervisor |
+	# --------------------
+	RUN	apt-get update && apt-get upgrade -y && apt-get install -y 								\
+			supervisor													&&	\
+				echo "[program:nginx]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
+				echo "command=/usr/sbin/nginx -g 'daemon off;'" | tee -a /etc/supervisor/conf.d/supervisord.conf
+	# Clean up |
+	# ----------
+	RUN	rm -rf /var/lib/apt/lists/*
 # 04 | create new user |
 # ----------------------
 	RUN	groupadd -g ${GROUP_ID} ${USER_NAME}												&&	\
