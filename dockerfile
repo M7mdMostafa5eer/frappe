@@ -42,7 +42,7 @@
 				postgresql-client						\
 		# install redis |
 		#----------------
-				redis-tools							\
+				redis-server							\
 		# for healthcheck |
 		# -----------------
 				wait-for-it							\
@@ -83,7 +83,7 @@
 				python3.10-venv							\
 		# nodejs & yarn |
 		# ---------------
-				&&	mkdir -p ${NVM_DIR}											&&	\
+				&& mkdir -p ${NVM_DIR}												&&	\
 				curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash					&&	\
 				. ${NVM_DIR}/nvm.sh												&&	\
 				nvm install ${NODE_VER}												&&	\
@@ -99,7 +99,9 @@
 	RUN	apt-get update && apt-get upgrade -y && apt-get install -y 									\
 			supervisor													&&	\
 				echo "[program:nginx]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
-				echo "command=/usr/sbin/nginx -g 'daemon off;'" | tee -a /etc/supervisor/conf.d/supervisord.conf
+				echo "command=/usr/sbin/nginx -g 'daemon off;'" | tee -a /etc/supervisor/conf.d/supervisord.conf	&&	\
+				echo "[program:redis]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
+				echo "command=/usr/bin/redis-server --bind 0.0.0.0" | tee -a /etc/supervisor/conf.d/supervisord.conf
 	# Clean up |
 	# ----------
 	RUN	rm -rf /var/lib/apt/lists/*
