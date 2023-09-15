@@ -14,7 +14,7 @@
 	ENV PATH ${NVM_DIR}/versions/node/v${NODE_VER}/bin/:${PATH}
 	ARG FRAPPE_BRANCH=version-14 && FRAPPE_FOLDER_NAME=frappe-bench && FRAPPE_PATH=https://github.com/frappe/frappe
 
-# 05 | update & install mandatory tools  |
+# 03 | update & install mandatory tools  |
 # ----------------------------------------
 	RUN	apt-get update && apt-get upgrade -y && DEBIAN_FRONTEND=noninteractive		\
 			 apt-get install -y							\
@@ -94,25 +94,30 @@
 				echo 'export NVM_DIR="/home/$USER_NAME/.nvm"' >>/home/${USER_NAME}/.bashrc					&&	\
 				echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"  # This loads nvm' >>/home/${USER_NAME}/.bashrc	&&	\
 				echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >>/home ${USER_NAME}/.bashrc
-	# install supervisor |
-	# --------------------
+
+# 05 | install supervisor |
+# -------------------------
 	RUN	apt-get update && apt-get upgrade -y && apt-get install -y 									\
 			supervisor													&&	\
 				echo "[program:nginx]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
 				echo "command=/usr/sbin/nginx -g 'daemon off;'" | tee -a /etc/supervisor/conf.d/supervisord.conf	&&	\
 				echo "[program:redis]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
 				echo "command=/usr/bin/redis-server --bind 0.0.0.0" | tee -a /etc/supervisor/conf.d/supervisord.conf
-	# Clean up |
-	# ----------
+
+# 06 | Clean up |
+# ---------------
 	RUN	rm -rf /var/lib/apt/lists/*
-# 04 | create new user |
+
+# 07 | create new user |
 # ----------------------
 	RUN	groupadd -g ${GROUP_ID} ${USER_NAME}											&&	\
 		useradd --no-log-init -r -m -u ${USER_ID} -g ${GROUP_ID} -G sudo ${USER_NAME}						&&	\
 		echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers								&&	\
 		chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}									&&	\
-		chmod -R o+rx /home/${USER_NAME}
-		
+		chmod -R o+rx /home/${USER_NAME
+
+# 08 | install frappe-bench |
+# ---------------------------
 	RUN pip3 install frappe-bench
 
 	USER ${USER_NAME}
@@ -128,4 +133,6 @@
 
 	WORKDIR /home/${USER_NAME}/$FRAPPE_FOLDER_NAME
 
+# 09 | setting entrypoint |
+# -------------------------
 	ENTRYPOINT ["sudo", "/usr/bin/supervisord", "-n"]
