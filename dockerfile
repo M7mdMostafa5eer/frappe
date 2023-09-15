@@ -114,7 +114,7 @@
 		useradd --no-log-init -r -m -u ${USER_ID} -g ${GROUP_ID} -G sudo ${USER_NAME}						&&	\
 		echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers								&&	\
 		chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}									&&	\
-		chmod -R o+rx /home/${USER_NAME
+		chmod -R o+rx /home/${USER_NAME}
 
 # 08 | install frappe-bench |
 # ---------------------------
