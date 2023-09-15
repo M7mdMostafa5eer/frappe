@@ -15,47 +15,19 @@ services:
     volumes:
       - MariaDB:/var/lib/mysql
     networks:
-      - frappe
-  
-  redis-cache:
-    container_name: redis-cache
-    image: ${Redis_IMAGE}
-    restart: unless-stopped
-    volumes:
-      - redis-cache:/data
-    networks:
-      - frappe
-  
-  redis-queue:
-    container_name: redis-queue
-    image: ${Redis_IMAGE}
-    restart: unless-stopped
-    volumes:
-      - redis-queue:/data
-    networks:
-      - frappe
+      - Frappe
 
-  redis-socketio:
-    container_name: redis-socketio
-    image: ${Redis_IMAGE}
-    restart: unless-stopped
-    volumes:
-      - redis-socketio:/data
-    networks:
-      - frappe
-  
   frappe-bench:
     container_name: frappe-bench
     image: ${IMAGE_NAME}
     restart: unless-stopped
     volumes:
-      - frappe-sites:/home/ubuntu/frappe-bench/sites
-      - frappe-apps:/home/ubuntu/frappe-bench/apps
+      - Frappe-Sites:/home/ubuntu/frappe-bench/sites
+      - Frappe-Apps:/home/ubuntu/frappe-bench/apps
     networks:
-      - frappe
+      - Frappe
     ports:
-      - 9999:9999
-      - 8888:8888
+      - 8000:8000
   
   configurator:
     container_name: configurator
@@ -75,25 +47,19 @@ services:
         bench set-config -g redis_socketio "redis://${REDIS_SOCKETIO}";
         bench set-config -g socketio_port "${SOCKETIO_PORT}";
     volumes:
-      - frappe-sites:/home/ubuntu/frappe-bench/sites
-      - frappe-apps:/home/ubuntu/frappe-bench/apps
+      - Frappe-Sites:/home/ubuntu/frappe-bench/sites
+      - Frappe-Apps:/home/ubuntu/frappe-bench/apps
     networks:
       - frappe
 
 volumes:
   MariaDB:
     name: MariaDB
-  redis-cache:
-    name: redis-cache
-  redis-queue:
-    name: redis-queue
-  redis-socketio:
-    name: redis-socketio
-  frappe-sites:
-    name: frappe-sites
-  frappe-apps:
-    name: frappe-apps
+  Frappe-Sites:
+    name: Frappe-Sites
+  Frappe-Apps:
+    name: Frappe-Apps
 
 networks:
-  frappe:
-    name: frappe
+  Frappe:
+    name: Frappe
