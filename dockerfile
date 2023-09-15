@@ -97,7 +97,7 @@
 
 # 05 | install supervisor |
 # -------------------------
-	RUN	apt-get update && apt-get upgrade -y && apt-get install -y 									\
+	RUN	apt-get update && apt-get upgrade -y && apt-get install -y									\
 			supervisor													&&	\
 				echo "[program:nginx]" | tee -a /etc/supervisor/conf.d/supervisord.conf					&&	\
 				echo "command=/usr/sbin/nginx -g 'daemon off;'" | tee -a /etc/supervisor/conf.d/supervisord.conf	&&	\
