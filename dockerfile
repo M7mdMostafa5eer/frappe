@@ -11,8 +11,8 @@
 	ARG	GROUP_ID=1000 && USER_ID=1000 && USER_NAME=ubuntu
 	ARG 	NODE_VER=18.16.1
 	ENV	NVM_DIR=/home/${USER_NAME}/.nvm
-	ENV PATH ${NVM_DIR}/versions/node/v${NODE_VER}/bin/:${PATH}
-	ARG FRAPPE_BRANCH=version-14 && FRAPPE_FOLDER_NAME=frappe-bench && FRAPPE_PATH=https://github.com/frappe/frappe
+	ENV 	PATH ${NVM_DIR}/versions/node/v${NODE_VER}/bin/:${PATH}
+	ARG 	FRAPPE_BRANCH=version-14 && FRAPPE_FOLDER_NAME=frappe-bench && FRAPPE_PATH=https://github.com/frappe/frappe
 
 # 04 | create new user |
 # ----------------------
@@ -21,10 +21,10 @@
 		echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers								&&	\
 		chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}									&&	\
 		chmod -R o+rx /home/${USER_NAME}
-		USER root
 
 # 05 | update & install mandatory tools  |
 # ----------------------------------------
+	USER	root
 	RUN	apt-get update && apt-get upgrade -y && DEBIAN_FRONTEND=noninteractive		\
 			 apt-get install -y							\
 				sudo								\
