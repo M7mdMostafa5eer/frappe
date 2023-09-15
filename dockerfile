@@ -9,12 +9,21 @@
 # 03 | create variables |
 # -----------------------
 	ARG	GROUP_ID=1000 && USER_ID=1000 && USER_NAME=ubuntu
-	ARG NODE_VER=18.16.1
+	ARG 	NODE_VER=18.16.1
 	ENV	NVM_DIR=/home/${USER_NAME}/.nvm
 	ENV PATH ${NVM_DIR}/versions/node/v${NODE_VER}/bin/:${PATH}
 	ARG FRAPPE_BRANCH=version-14 && FRAPPE_FOLDER_NAME=frappe-bench && FRAPPE_PATH=https://github.com/frappe/frappe
 
-# 03 | update & install mandatory tools  |
+# 04 | create new user |
+# ----------------------
+	RUN	groupadd -g ${GROUP_ID} ${USER_NAME}											&&	\
+		useradd --no-log-init -r -m -u ${USER_ID} -g ${GROUP_ID} -G sudo ${USER_NAME}						&&	\
+		echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers								&&	\
+		chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}									&&	\
+		chmod -R o+rx /home/${USER_NAME}
+		USER root
+
+# 05 | update & install mandatory tools  |
 # ----------------------------------------
 	RUN	apt-get update && apt-get upgrade -y && DEBIAN_FRONTEND=noninteractive		\
 			 apt-get install -y							\
@@ -107,14 +116,6 @@
 # 06 | Clean up |
 # ---------------
 	RUN	rm -rf /var/lib/apt/lists/*
-
-# 07 | create new user |
-# ----------------------
-	RUN	groupadd -g ${GROUP_ID} ${USER_NAME}											&&	\
-		useradd --no-log-init -r -m -u ${USER_ID} -g ${GROUP_ID} -G sudo ${USER_NAME}						&&	\
-		echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers								&&	\
-		chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}									&&	\
-		chmod -R o+rx /home/${USER_NAME}
 
 # 08 | install frappe-bench |
 # ---------------------------
