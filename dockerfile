@@ -1,5 +1,5 @@
 # 01 | use the official Ubuntu as the base image |
-# ------------------------------------------------
+# -------------------------------------------------
 	FROM ubuntu:latest
 
 # 02 | expose needed ports |
