@@ -29,40 +29,40 @@
             git																		\
             vim																		\
             nginx																	\
-            gettext-base															\
+            gettext-base													\
         # weasyprint_dependencies
-            libpango-1.0-0															\
-            libharfbuzz0b															\
-            libpangoft2-1.0-0														\
-            libpangocairo-1.0-0														\
+            libpango-1.0-0												\
+            libharfbuzz0b													\
+            libpangoft2-1.0-0											\
+            libpangocairo-1.0-0										\
         # for_backups
-            restic																	\
+            restic																\
         # mariadb
-            mariadb-client															\
+            mariadb-client												\
         # Postgres
-            postgresql-client														\
+            postgresql-client											\
         # for_healthcheck
-            wait-for-it																\
+            wait-for-it														\
             jq																		\
         # nodejs
-        &&  mkdir -p ${NVM_DIR}																	&&\
+        &&  mkdir -p ${NVM_DIR}																																&&\
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash		&&\
-            . ${NVM_DIR}/nvm.sh																	&&\
-            nvm install ${NODE_VERSION}															&&\
-            nvm use v${NODE_VERSION}															&&\
-            npm install -g yarn																	&&\
-            nvm alias default v${NODE_VERSION}													&&\
-            rm -rf ${NVM_DIR}/.cache															&&\
-            echo 'export NVM_DIR="/home/$USER_NAME/.nvm"' >>/home/${USER_NAME}/.bashrc			&&\
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >>/home/${USER_NAME}/.bashrc	&&\
+            . ${NVM_DIR}/nvm.sh																																&&\
+            nvm install ${NODE_VERSION}																												&&\
+            nvm use v${NODE_VERSION}																													&&\
+            npm install -g yarn																																&&\
+            nvm alias default v${NODE_VERSION}																								&&\
+            rm -rf ${NVM_DIR}/.cache																													&&\
+            echo 'export NVM_DIR="/home/$USER_NAME/.nvm"' >>/home/${USER_NAME}/.bashrc				&&\
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >>/home/${USER_NAME}/.bashrc			&&\
             echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >>/home/${USER_NAME}/.bashrc	&&\
         # Install wkhtmltopdf with patched qt
             curl -sLO https://github.com/wkhtmltopdf/packaging/releases/download/$WKHTMLTOPDF_VERSION/$Downloaded_File	&&\
-            apt-get install -y ./$Downloaded_File																		&&\
+            apt-get install -y ./$Downloaded_File																																				&&\
         # Fixes for non-root nginx and logs to stdout
-            sed -i '/user www-data/d' /etc/nginx/nginx.conf																&&\
-            ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log					&&\
-            touch /run/nginx.pid																						&&\
+            sed -i '/user www-data/d' /etc/nginx/nginx.conf																															&&\
+            ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log									&&\
+            touch /run/nginx.pid																																												&&\
             chown -R ${USER_NAME}:${USER_NAME} /etc/nginx/conf.d														&&\
             chown -R ${USER_NAME}:${USER_NAME} /etc/nginx/nginx.conf													&&\
             chown -R ${USER_NAME}:${USER_NAME} /var/log/nginx															&&\
