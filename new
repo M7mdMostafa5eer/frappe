@@ -1,5 +1,5 @@
 # 01 | use the official Ubuntu as the base image |
-# -------------------------------------------------
+# ------------------------------------------------
 	ARG PYTHON_VERSION=3.11.4
     ARG DEBIAN_BASE=bookworm
     FROM python:${PYTHON_VERSION}-slim-${DEBIAN_BASE} AS base
